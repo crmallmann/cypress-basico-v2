@@ -1,5 +1,7 @@
 /// <reference types="Cypress" />
 
+const { should } = require("chai")
+
 describe('Central de Atendimento ao Cliente TAT', function() {
 
     this.beforeEach(function(){
@@ -151,5 +153,17 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         .should(function($input) {
           expect($input[0].files[0].name).to.equal('example.json')
         })
+    })
+
+    it.only('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', function() {
+      cy.get('#privacy a').should('have.attr', 'target', '_blank')
+    })
+    
+    it('acessa a página da política de privacidade removendo o target e então clicando no link', function() {
+      cy.get('#privacy a')
+      .invoke('removeAttr', 'target')
+      .click()
+
+      cy.contains('Talking About Testing').should('be.visible')
     })
   })
